@@ -8,6 +8,7 @@ const DayOne = () => {
     const [calories, setCalories] = useState()
     const [groupedCalories, setGroupedCalories] = useState([])
     const [mostCalories, setMostCalories] = useState()
+    const [threeMostCalories, setThreeMostCalories] = useState()
 
     useEffect(() => {
         axios.get('resources/dayOne.txt')
@@ -33,6 +34,14 @@ const DayOne = () => {
     useEffect(() => {
         if (groupedCalories) {
             setMostCalories(Math.max(...groupedCalories))
+            let count = 0
+            let arr = [...groupedCalories]
+            for (let i = 0; i < 3; i++) {
+                const highest = Math.max(...arr)
+                count += highest
+                arr = arr.filter(value => value !== highest)
+            }
+            setThreeMostCalories(count)
         }
     }, [groupedCalories])
 
@@ -41,6 +50,8 @@ const DayOne = () => {
             <DayText dayNumber={1} />
             <PartText partNumber={'One'} />
             <Solution result={mostCalories ? mostCalories.toString() : null} />
+            <PartText partNumber={'Two'} />
+            <Solution result={threeMostCalories ? threeMostCalories.toString() : null} />
         </div>
     )
 }
