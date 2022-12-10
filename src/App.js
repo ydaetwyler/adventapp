@@ -4,6 +4,7 @@ import DayOne from './components/DayOne'
 import DayTwo from './components/DayTwo'
 import DayThree from './components/DayThree'
 import DayFour from './components/DayFour'
+import DayFive from './components/DayFive'
 
 const App = () => (
   <div className="bg-gray-900 w-full h-screen overflow-y-auto antialiased pb-32">
@@ -13,6 +14,7 @@ const App = () => (
       <DayTwo />
       <DayThree />
       <DayFour />
+      <DayFive />
     </div>
   </div>
 )
