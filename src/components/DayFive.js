@@ -4,7 +4,7 @@ import DayText from './DayText'
 import PartText from './PartText'
 import Solution from './Solution'
 
-const rearangeStacks = (instructionsNumbersCopy) => {
+const rearangeStacks = instructionsNumbersCopy => {
 
     const stacks = {
         1: ['B', 'S', 'J', 'Z', 'V', 'D', 'G'],
@@ -31,11 +31,43 @@ const rearangeStacks = (instructionsNumbersCopy) => {
     return stacks
 }
 
+const newCrane = instructionsNumbersCopy => {
+
+    const stacks = {
+        1: ['B', 'S', 'J', 'Z', 'V', 'D', 'G'],
+        2: ['P', 'V', 'G', 'M', 'S', 'Z'],
+        3: ['F', 'Q', 'T', 'W', 'S', 'B', 'L', 'C'],
+        4: ['Q', 'V', 'R', 'M', 'W', 'G', 'J', 'H'],
+        5: ['D', 'M', 'F', 'N', 'S', 'L', 'C'],
+        6: ['D', 'C', 'G', 'R'],
+        7: ['Q', 'S', 'D', 'J', 'R', 'T', 'G', 'H'],
+        8: ['V', 'F', 'P'],
+        9: ['J', 'T', 'S', 'R', 'D']
+    }
+    
+    instructionsNumbersCopy.forEach(instruction => {
+        
+        const sliceSize = instruction[0]
+        const from = instruction[1]
+        const to = instruction[2]
+
+        const sliceCopy = stacks[from].splice(0, sliceSize)
+        const stacksToCopy = stacks[to]
+        stacks[to] = sliceCopy.concat(stacksToCopy)
+
+    })
+
+    return stacks
+
+}
+
 const DayFive = () => {
     const [instructions, setInstructions] = useState()
     const [instructionsNumbers, setInstructionsNumbers] = useState()
     const [stacksNew, setStacksNew] = useState()
     const [stacksFirst, setStacksFirst] = useState()
+    const [stacksNewCrane, setStacksNewCrane] = useState()
+    const [stacksFirstNewCrane, setStacksFirstNewCrane] = useState()
 
     useEffect(() => {
         axios.get('resources/dayFive.txt')
@@ -60,6 +92,12 @@ const DayFive = () => {
     }, [instructionsNumbers])
 
     useEffect(() => {
+        if (instructionsNumbers && stacksNew) {
+            setStacksNewCrane(newCrane(instructionsNumbers))
+        }
+    }, [instructionsNumbers, stacksNew])
+
+    useEffect(() => {
         if (stacksNew) {
             const stacksFirstArr = []
             for (let i = 1; i <= 9; i++) {
@@ -69,11 +107,23 @@ const DayFive = () => {
         }  
     }, [stacksNew])
 
+    useEffect(() => {
+        if (stacksNewCrane) {
+            const stacksFirstArr = []
+            for (let i = 1; i <= 9; i++) {
+                stacksFirstArr.push(stacksNewCrane[i][0])
+            }
+            setStacksFirstNewCrane(stacksFirstArr.join(''))
+        }
+    }, [stacksNewCrane])
+
     return (
         <div>
             <DayText dayNumber={5} />
             <PartText partNumber={'One'} />
             <Solution result={stacksFirst ? stacksFirst : null} />
+            <PartText partNumber={'Two'} />
+            <Solution result={stacksFirstNewCrane ? stacksFirstNewCrane : null} />
         </div>
     )
 }
