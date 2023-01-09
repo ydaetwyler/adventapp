@@ -46,12 +46,6 @@ const DaySix = () => {
         }
     }, [buffer])
 
-    useEffect(() => {
-        if (buffer) {
-
-        }
-    }, [buffer])
-
     return (
         <div>
             <DayText dayNumber={6} />
